@@ -1,0 +1,26 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}UsersList{% endblock %}
+
+{% block body %}
+    <h1>UsersList</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ users_list.id }}</td>
+            </tr>
+            <tr>
+                <th>Name_of_list</th>
+                <td>{{ users_list.nameOfList }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('users_list_index') }}">back to list</a>
+
+    <a href="{{ path('users_list_edit', {'id': users_list.id}) }}">edit</a>
+
+    {{ include('users_list/_delete_form.html.twig') }}
+{% endblock %}

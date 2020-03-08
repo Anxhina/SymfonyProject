@@ -1,0 +1,8 @@
+{
+    "php": {
+        "version": "7.2"
+    },
+    "zendframework/zend-code": {
+        "version": "3.4.1"
+    }
+}

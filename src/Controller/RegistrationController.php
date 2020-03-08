@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Users;
+use App\Entity\UsersList;
+
+use App\Form\RegistrationFormType;
+use App\Security\AppUsersAuthenticator;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+
+class RegistrationController extends AbstractController
+{
+    /**
+     * @Route("/register", name="app_register")
+     */
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, AppUsersAuthenticator $authenticator): Response
+    {
+        $user = new Users();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+        //return $this->redirect($this->generateUrl(route: 'app_login'));
+
+            // do anything else you need here, like send an email
+
+            return $guardHandler->authenticateUserAndHandleSuccess(
+                $user,
+                $request,
+                $authenticator,
+                'main' // firewall name in security.yaml
+            );
+        }
+                //return new RedirectResponse($this->urlGenerator->generate('app_login'));
+
+
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/list", name="list")
+     */
+    public function list(Request $request): Response
+    {
+        $user = new UsersList();
+        $form = $this->createForm(UsersListFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+         
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+        }
+                //return new RedirectResponse($this->urlGenerator->generate('app_login'));
+
+
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
+    }
+
+
+
+ 
+
+  
+}

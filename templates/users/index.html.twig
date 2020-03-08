@@ -1,0 +1,35 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Users index{% endblock %}
+
+{% block body %}
+    <h1>Users index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Paswword</th>
+                <th>Username</th>
+                <th>Bio</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ app.user.id }}</td>
+                <td>{{ app.user.email }}</td>
+                <td>{{ app.user.password }}</td>
+                <td>{{ app.user.username }}</td>
+                <td>{{ app.user.bio }}</td>
+                <td>
+                    <a href="{{ path('users_edit', {'id': app.user.id}) }}">edit</a>
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}UsersList index{% endblock %}
+
+{% block body %}
+    <h1>UsersList index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+
+                <th>Name_of_list</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for users_list in users_lists %}
+
+            <tr>
+                <td>{{ users_list.id }}</td>
+
+                <td> <a href="{{path('movies_index',  {'id': users_list.id})}}"> {{ users_list.nameOfList }}</a></td>
+
+                <td>
+                    <a href="{{ path('users_list_edit', {'id': users_list.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('users_list_new') }}">Create new</a>
+{% endblock %}
